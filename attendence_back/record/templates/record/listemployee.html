@@ -1,0 +1,87 @@
+{% extends 'record/base.html' %}
+
+{% block title %}
+Search Employee By Name or Number
+{% endblock %}
+
+{% block content %}
+                <div class="container-fluid">
+                    <h3 class="text-dark mb-4">Admin Panel</h3>
+                    <div class="card shadow">
+                        <div class="card-header py-3">
+                            <p class="text-primary m-0 font-weight-bold">All Employees</p>
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-6 text-nowrap">
+                                    <div id="dataTable_length" class="dataTables_length" aria-controls="dataTable"></div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="text-md-right dataTables_filter" id="dataTable_filter"><label><form method="post">{% csrf_token %}<input type="search" class="form-control form-control-sm" aria-controls="dataTable" placeholder="Search by Name or Number" name="query"><button class="btn btn-primary py-0" type="submit">Search</button></form></label></div>
+                                </div>
+                            </div>{% if attO %}
+                            <div class="table-responsive table mt-2" id="dataTable" role="grid" aria-describedby="dataTable_info">
+                                <table class="table my-0" id="dataTable">
+                                    <thead>
+                                        <tr>
+                                            <th>Name</th>
+                                            <th>Position</th>
+                                            <th>Contact</th>
+                                            <th>IMEI</th>
+                                            <th>Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for x in attO %}
+                                        <tr>
+                                            <td><a href="/profileEmp/{{ x.pk }}"><img class="rounded-circle mr-2" width="30" height="30" src="{{ x.photo.url }}">{{ x.empName }}</a></td>
+                                            <td>{{ x.designation }}</td>
+                                            <td>{{ x.contact }}</td>
+                                            <td>{{ x.imei }}</td>
+                                            <td><form method="POST" action="/deleteemployee/{{ x.pk }}">{% csrf_token %}<button type="submit" class="btn btn-danger">DELETE</button></form></td>
+                                        </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                    <tfoot>
+                                        <tr>
+                                            <td><strong>Name</strong></td>
+                                            <td><strong>Position</strong></td>
+                                            <td><strong>Contact</strong></td>
+                                            <td><strong>IMEI</strong></td>
+                                            <td><strong>Action</strong></td>
+                                        </tr>
+                                    </tfoot>
+                                </table>
+                            </div>
+                            {% endif %}
+                            <div class="row">
+                                
+                                <div class="col-md-6 align-self-center">
+                                    <!-- <p id="dataTable_info" class="dataTables_info" role="status" aria-live="polite">Showing 1 to 10 of 27</p> -->
+                                </div>
+                                {% if attO.has_other_pages %}
+                                <div class="col-md-6">
+                                    <nav class="d-lg-flex justify-content-lg-end dataTables_paginate paging_simple_numbers">
+                                        <ul class="pagination">
+                                            {% if attO.has_previous %}
+                                            <li class="page-item"><a class="page-link" href="/listemployee/{{ attO.previous_page_number }}" aria-label="Previous"><span aria-hidden="true">«</span></a></li>
+                                            {% endif %}
+                                            {% for i in attO.paginator.page_range %}
+                                            {% if attO.number == i %}
+                                            <li class="page-item active"><a class="page-link" href="#">{{ i }}</a></li>
+                                            {% else %}
+                                            <li class="page-item"><a class="page-link" href="/listemployee/{{ i }}">{{ i }}</a></li>
+                                            {% endif %}
+                                            {% endfor %}
+                                            {% if attO.has_next %}
+                                            <li class="page-item"><a class="page-link" href="/listemployee/{{ attO.next_page_number }}" aria-label="Next"><span aria-hidden="true">»</span></a></li>
+                                            {% endif %}
+                                        </ul>
+                                    </nav>
+                                </div>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endblock %}

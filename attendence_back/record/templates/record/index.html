@@ -1,0 +1,62 @@
+{% extends 'record/base.html' %}
+
+
+{% block title %}
+Dashboard
+{% endblock %}
+
+
+{% block content %}
+
+<!-- <div id="content"> -->
+    
+    <div class="container-fluid">
+        <div class="d-sm-flex justify-content-between align-items-center mb-4">
+            <h3 class="text-dark mb-0">Dashboard</h3><a class="btn btn-primary btn-sm d-none d-sm-inline-block" role="button" href="/home"><i class="fas fa-download fa-sm text-white-50"></i>&nbsp;Generate Report</a></div>
+        <div class="row"></div>
+        <div class="row">
+            <div class="col">
+                <div class="row">
+                    <div class="col-lg-6 mb-4">
+                        <div class="card text-white bg-primary shadow">
+                            <div class="card-body">
+                                <p class="m-0">Total Employees</p>
+                                <p class="text-white-50 small m-0">{{ total_emp }}</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-6 mb-4">
+                        <div class="card text-white bg-success shadow">
+                            <div class="card-body">
+                                <p class="m-0">Employees Present Today</p>
+                                <p class="text-white-50 small m-0">{{ present_emp }}</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-6 mb-4">
+                        <div class="card text-white bg-info shadow">
+                            <div class="card-body">
+                                <p class="m-0">Employees Absent Today</p>
+                                <p class="text-white-50 small m-0">{{ absent_emp }}</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-6 mb-4">
+                        <div class="card text-white bg-warning shadow">
+                            <div class="card-body">
+                                <p class="m-0">Employees Late Today</p>
+                                <p class="text-white-50 small m-0">{{ late_emp }}</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-6 mb-4">
+                        <div class="card text-white bg-danger shadow"></div>
+                    </div>
+                    <div class="col-lg-6 mb-4">
+                        <div class="card text-white bg-secondary shadow"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+            {% endblock %}

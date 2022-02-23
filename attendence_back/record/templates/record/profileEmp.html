@@ -1,0 +1,166 @@
+{% extends 'record/base.html' %}
+{% load leaflet_tags %}
+{% block title %}
+Profile
+{% endblock %}
+
+{% block head %}
+{% leaflet_js %}
+    {% leaflet_css %}
+
+<style>
+#my-map {
+    width:960px;
+    height:500px;
+}
+</style>
+{% endblock %}
+
+{% block content %}
+<script type="text/javascript">
+function map_init(map, options) {
+    var basemap = L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
+        attribution: '<a href="http://osm.org/copyright">OpenStreetMap</a>',
+
+    });
+    // get point lat and lon
+    var lon = "{{ emp.loc.x }}";
+    var lat = "{{ emp.loc.y }}";
+    // zoom to point & add it to map
+    map.setView([lat, lon], 12);
+    L.marker([lat, lon]).addTo(map);
+
+}</script>
+{% if message %}
+<script type="text/javascript">
+    alert("{{ message }}");
+</script>
+{% endif %}
+<div class="container-fluid">
+    <h3 class="text-dark mb-4">Profile</h3>
+    <div class="row mb-3">
+        <div class="col-lg-4">
+            <div class="card mb-3">
+                <div class="card-body text-center shadow"><img class="rounded-circle mb-3 mt-4" src="{{ emp.photo.url }}" width="160" height="160">
+                    
+                </div>
+            </div>
+            <div class="card shadow mb-4">
+                <div class="card-header py-3">
+                    <h6 class="text-primary font-weight-bold m-0">Stats Of Month</h6>
+                </div>
+                <div class="card-body">
+                    <h4 class="small font-weight-bold">On Time<span class="float-right">{{ empOnTime }}%</span></h4>
+                    <div class="progress progress-sm mb-3">
+                        <div class="progress-bar bg-danger" aria-valuenow="{{ empOnTime }}" aria-valuemin="0" aria-valuemax="100" style="width: {{ empOnTime }}%;"><span class="sr-only">{{ empOnTime }}%</span></div>
+                    </div>
+                    <h4 class="small font-weight-bold">Half day<span class="float-right">{{ empOnHalf }}%</span></h4>
+                    <div class="progress progress-sm mb-3">
+                        <div class="progress-bar bg-warning" aria-valuenow="{{ empOnHalf }}" aria-valuemin="0" aria-valuemax="100" style="width: {{ empOnHalf }}%;"><span class="sr-only">{{ empOnHalf }}%</span></div>
+                    </div>
+                    <h4 class="small font-weight-bold">Leave<span class="float-right">{{ empOnLeave }}%</span></h4>
+                    <div class="progress progress-sm mb-3">
+                        <div class="progress-bar bg-primary" aria-valuenow="{{ empOnLeave }}" aria-valuemin="0" aria-valuemax="100" style="width: {{ empOnLeave }}%;"><span class="sr-only">{{ empOnLeave }}%</span></div>
+                    </div>
+                    <h4 class="small font-weight-bold">Present<span class="float-right">{{ present }}%</span></h4>
+                    <div class="progress progress-sm mb-3">
+                        <div class="progress-bar bg-info" aria-valuenow="{{ present }}" aria-valuemin="0" aria-valuemax="100" style="width: {{ present }}%;"><span class="sr-only">{{ present }}%</span></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-8">
+            <div class="row mb-3 d-none">
+                <div class="col">
+                    <div class="card text-white bg-primary shadow">
+                        <div class="card-body">
+                            <div class="row mb-2">
+                                <div class="col">
+                                    <p class="m-0">Peformance</p>
+                                    <p class="m-0"><strong>65.2%</strong></p>
+                                </div>
+                                <div class="col-auto"><i class="fas fa-rocket fa-2x"></i></div>
+                            </div>
+                            <p class="text-white-50 small m-0"><i class="fas fa-arrow-up"></i>&nbsp;5% since last month</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="card text-white bg-success shadow">
+                        <div class="card-body">
+                            <div class="row mb-2">
+                                <div class="col">
+                                    <p class="m-0">Peformance</p>
+                                    <p class="m-0"><strong>65.2%</strong></p>
+                                </div>
+                                <div class="col-auto"><i class="fas fa-rocket fa-2x"></i></div>
+                            </div>
+                            <p class="text-white-50 small m-0"><i class="fas fa-arrow-up"></i>&nbsp;5% since last month</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <div class="card shadow mb-3">
+                        <div class="card-header py-3">
+                            <p class="text-primary m-0 font-weight-bold">Profile Settings</p>
+                        </div>
+                        <div class="card-body">
+                            <form method="POST">
+                                <!-- <input type="hidden" name="checkVal" value="pr"> -->
+                                {% csrf_token %}
+                                <input type="hidden" name="checkVal" value="pr">
+                                <div class="form-row">
+                                    <div class="col">
+                                        <div class="form-group"><label for="name"><strong>Full Name</strong></label><input class="form-control" type="text" placeholder="{{ emp.empName }}" value ="{{ emp.empName }}" name="name"></div>
+                                    </div>
+                                    <div class="col">
+                                        <div class="form-group"><label for="contact"><strong>Contact</strong></label><input class="form-control" type="text" value="{{ emp.contact }}" placeholder="{{ emp.contact }}" name="contact"></div>
+                                    </div>
+                                </div>
+                                <div class="form-row">
+                                    <div class="col">
+                                        <div class="form-group"><label for="designation"><strong>Position</strong></label><input class="form-control" type="text" value="{{ emp.designation }}" placeholder="{{ emp.designation }}" name="designation"></div>
+                                    </div>
+                                    <div class="col">
+                                        <div class="form-group"><label for="imei"><strong>IMEI (Set x to reset IMEI)</strong></label><input class="form-control" type="text" value="{{ emp.imei }}" placeholder="{{ emp.imei }}" name="imei"></div>
+                                    </div>
+                                </div>
+                                <div class="form-group"><button class="btn btn-primary btn-sm" type="submit">Save Settings</button></div>
+                            </form>
+                        </div>
+                    </div>
+                    <div class="card shadow">
+                        <div class="card-header py-3">
+                            <p class="text-primary m-0 font-weight-bold">Location</p>
+                        </div>
+                        <div class="card-body">
+                            {% leaflet_map "main" callback="map_init" %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="card shadow mb-5">
+        <div class="card-header py-3">
+            <p class="text-primary m-0 font-weight-bold">Send Message&nbsp&nbsp&nbsp&nbsp<a class="btn btn-info" href="/listmessageMonth/{{ emp.pk }}">View Messages of this month</a></p>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-6">
+                    <form method="post">
+                        {% csrf_token %}
+                        <!-- <input type="hidden" name="checkVal"> -->
+                        <input type="hidden" name="checkVal" value="msg">
+                        <div class="form-group"><label for="message"><strong>Message</strong><br></label><textarea class="form-control" rows="4" name="message"></textarea></div>
+                        
+                        <div class="form-group"><button class="btn btn-primary btn-sm" type="submit">Post</button></div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+            {% endblock %}

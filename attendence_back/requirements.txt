@@ -1,0 +1,7 @@
+django
+gunicorn
+pillow
+psycopg2-binary
+django-leaflet
+requests
+djangorestframework
